@@ -5,7 +5,6 @@
     $mail=$_POST['mail'];
     $pass=$_POST['pass'];
     $pass2=$_POST['pass2'];
-    var_dump($_POST);
     $log=array();
     if(empty($name)){
         $log[] = "Имя пустое!";
@@ -32,7 +31,7 @@
         $query = $connection -> query ("SELECT * FROM users WHERE name LIKE ('$name') OR phone LIKE ('$phone') OR mail LIKE ('$mail') ");
         
     }
-    if(sizeof($query) != 0){
+    if(($query->num_rows) != 0){
         while($nameBD=$query->fetch_assoc()){
             
             if($name==$nameBD["name"]){
@@ -45,7 +44,6 @@
             }
             else if($mail==$nameBD["mail"]){
                 echo "Пользователь с почтой". " ". $nameBD["mail"]." ". "существует! Выполните вход!";
-
                 exit();
             }
         }
@@ -54,8 +52,7 @@
         
     else{
         $query = $connection -> query ("INSERT INTO users (name, phone, mail, password) VALUES ('$name', '$phone', '$mail', '$pass')");
-        if($query){
-                        
+        if($query){            
                         header("Location: index.html");
                         exit();
                     }
